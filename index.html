@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -41,7 +42,7 @@
 
   /* ── WRAPPER ── */
   .page {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
   }
 
@@ -220,25 +221,39 @@
 
   table {
     width: 100%;
-    min-width: 1000px;
+    min-width: 900px;
     border-collapse: collapse;
+    table-layout: fixed;
   }
+
+  thead th:nth-child(1)  { width: 9%; }
+  thead th:nth-child(2)  { width: 5%; }
+  thead th:nth-child(3)  { width: 7%; }
+  thead th:nth-child(4)  { width: 8%; }
+  thead th:nth-child(5)  { width: 8%; }
+  thead th:nth-child(6)  { width: 7%; }
+  thead th:nth-child(7)  { width: 6%; }
+  thead th:nth-child(8)  { width: 10%; }
+  thead th:nth-child(9)  { width: 9%; }
+  thead th:nth-child(10) { width: 31%; }
 
   thead th {
     background: var(--surface2);
-    font-size: 10.5px;
+    font-size: 9.5px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.7px;
+    letter-spacing: 0.5px;
     color: var(--text-muted);
-    padding: 10px 16px;
+    padding: 9px 8px;
     text-align: left;
     border-bottom: 1px solid var(--border);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  thead th:first-child { padding-left: 24px; }
-  thead th:last-child { padding-right: 24px; }
+  thead th:first-child { padding-left: 16px; }
+  thead th:last-child { padding-right: 16px; }
 
   tbody tr {
     border-bottom: 1px solid var(--border);
@@ -249,18 +264,19 @@
   tbody tr:hover { background: var(--surface2); }
 
   tbody td {
-    padding: 14px 16px;
-    font-size: 13.5px;
+    padding: 10px 8px;
+    font-size: 12px;
     vertical-align: top;
+    overflow: hidden;
   }
 
   tbody td:first-child {
-    padding-left: 24px;
+    padding-left: 16px;
     font-weight: 600;
     color: var(--text-primary);
   }
 
-  tbody td:last-child { padding-right: 24px; }
+  tbody td:last-child { padding-right: 16px; }
 
   .tipo-badge {
     display: inline-block;
@@ -283,10 +299,10 @@
   .pill {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 4px 10px;
+    gap: 4px;
+    padding: 3px 7px;
     border-radius: 20px;
-    font-size: 11.5px;
+    font-size: 10px;
     font-weight: 600;
     white-space: nowrap;
   }
@@ -331,10 +347,9 @@
 
   /* ── COMENTARIO ── */
   .comentario {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-secondary);
-    line-height: 1.5;
-    max-width: 340px;
+    line-height: 1.4;
   }
 
   /* ── FOOTER ── */
@@ -452,118 +467,7 @@
         </tr>
       </thead>
       <tbody>
-
-        <!-- ✏️ ════════════════════════════════════════════
-             ZONA DE EDICIÓN: agregar / modificar proyectos
-             Copiar un bloque <tr>...</tr> para nueva fila
-             Opciones de pill: class="pill good" | "pill medio" | "pill malo"
-             ════════════════════════════════════════════ -->
-
-        <tr>
-          <td>Basic</td>
-          <td><span class="tipo-badge">Amiba</span></td>
-          <td><span class="fecha">28/10/2025</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="pill medio"><span class="pill-dot"></span>Medio</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="monto">$990</span></td>
-          <td>En producción desde 19/3/2026</td>
-          <td>—</td>
-          <td><span class="comentario">Tool actualizada, se detectan errores sobre productos específicos. Se puede avanzar con pruebas.</span></td>
-        </tr>
-
-        <tr>
-          <td>El Lector</td>
-          <td><span class="tipo-badge">Amiba</span></td>
-          <td><span class="fecha">04/06/2025</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="pill medio"><span class="pill-dot"></span>Medio</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="monto">$3.926</span></td>
-          <td>—</td>
-          <td>—</td>
-          <td><span class="comentario">Cliente brindando feedbacks para mejoras y correcciones del chatbot.</span></td>
-        </tr>
-
-        <tr>
-          <td>Enex</td>
-          <td><span class="tipo-badge">Amiba</span></td>
-          <td><span class="fecha">09/12/2025</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="pill medio"><span class="pill-dot"></span>Medio</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="monto">$280</span></td>
-          <td>—</td>
-          <td>—</td>
-          <td><span class="comentario">WhatsApp de prueba conectado. Realizando pruebas iniciales. Continuar con parametrizaciones.</span></td>
-        </tr>
-
-        <tr>
-          <td>Go Media</td>
-          <td><span class="tipo-badge">Amiba</span></td>
-          <td><span class="fecha">26/01/2026</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="monto">$500</span></td>
-          <td>—</td>
-          <td>—</td>
-          <td><span class="comentario">Iniciando parametrizaciones. Solicitamos al cliente la hoja de relevamiento técnico inicial.</span></td>
-        </tr>
-
-        <tr>
-          <td>Iphone Boutique</td>
-          <td><span class="tipo-badge">Amiba</span></td>
-          <td><span class="fecha">19/11/2025</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="pill malo"><span class="pill-dot"></span>Malo</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="monto">$100</span></td>
-          <td>—</td>
-          <td><span class="bloq">Retorno del cliente</span></td>
-          <td><span class="comentario">Sin retorno del cliente. Pendiente de respuesta para continuar.</span></td>
-        </tr>
-
-        <tr>
-          <td>La Consolidada</td>
-          <td><span class="tipo-badge">Amiba</span></td>
-          <td><span class="fecha">08/04/2025</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="pill medio"><span class="pill-dot"></span>Medio</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="monto">$4.888</span></td>
-          <td>—</td>
-          <td>—</td>
-          <td><span class="comentario">Flujograma terminado. Trabajando en pruebas y mejoras del mismo.</span></td>
-        </tr>
-
-        <tr>
-          <td>Senatur</td>
-          <td><span class="tipo-badge">Amiba</span></td>
-          <td><span class="fecha">03/10/2025</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="pill medio"><span class="pill-dot"></span>Medio</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="monto-empty">—</span></td>
-          <td>—</td>
-          <td><span class="bloq">Confirmación del cliente</span></td>
-          <td><span class="comentario">Aguardando autorización para lanzamiento en WhatsApp.</span></td>
-        </tr>
-
-        <tr>
-          <td>TAXit</td>
-          <td><span class="tipo-badge">Amiba</span></td>
-          <td><span class="fecha">21/11/2025</span></td>
-          <td><span class="pill medio"><span class="pill-dot"></span>Medio</span></td>
-          <td><span class="pill malo"><span class="pill-dot"></span>Malo</span></td>
-          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
-          <td><span class="monto">$2.050</span></td>
-          <td>—</td>
-          <td><span class="bloq">En Desarrollo</span></td>
-          <td><span class="comentario">Login con Facebook en desarrollo. Verificación por aplicación en curso. Pendiente APP REVIEW. Desarrollo en fase final.</span></td>
-        </tr>
-
-        <!-- ✏️ NUEVA FILA: copiar bloque de arriba y pegar acá -->
+        <!-- Filas generadas automáticamente desde Google Sheets -->
 
       </tbody>
     </table>
@@ -573,10 +477,118 @@
   <!-- ══ FOOTER ══ -->
   <div class="footer">
     <div class="footer-left">Amiba © 2026 · RugerTek – Reporte confidencial de uso interno</div>
-    <!-- ✏️ EDITAR: número de reporte semanal -->
-    <div class="footer-right">Report #014 · Semana 16</div>
+    <div class="footer-right" id="footerReport">Cargando...</div>
   </div>
 
 </div>
+
+<script>
+// ══ CONFIGURACIÓN ══════════════════════════════════════════
+// ✏️ Solo tocás esta URL si cambiás el Google Sheets
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSGBMq_1n3JgpIg7Co2GxXBsq_C-ImZMp0VyH4LOEI3awDiEGSa3IFvwc4xesCsog/pub?gid=888525387&single=true&output=csv";
+
+// ✏️ Actualizá el número de reporte cada semana
+const REPORT_NUM = "014";
+const REPORT_SEMANA = "16";
+// ═══════════════════════════════════════════════════════════
+
+function parseCSV(text) {
+  const lines = text.trim().split("\n");
+  // Saltamos filas 1 (título) y 2 (instrucción), fila 3 son headers
+  const headers = lines[2].split(",").map(h => h.trim().replace(/^"|"$/g, ""));
+  const rows = [];
+  for (let i = 3; i < lines.length; i++) {
+    const vals = lines[i].match(/(".*?"|[^,]+|(?<=,)(?=,)|^(?=,)|(?<=,)$)/g) || [];
+    const clean = vals.map(v => v.trim().replace(/^"|"$/g, ""));
+    if (clean[0] && clean[0] !== "← Nuevo proyecto acá") {
+      const obj = {};
+      headers.forEach((h, idx) => obj[h] = clean[idx] || "");
+      rows.push(obj);
+    }
+  }
+  return rows;
+}
+
+function pill(val) {
+  const v = (val || "").trim().toLowerCase();
+  if (!v || v === "—" || v === "-") return "—";
+  const cls = v === "good" ? "good" : v === "medio" ? "medio" : "malo";
+  const label = v.charAt(0).toUpperCase() + v.slice(1);
+  return `<span class="pill ${cls}"><span class="pill-dot"></span>${label}</span>`;
+}
+
+function renderRows(rows) {
+  const tbody = document.querySelector("tbody");
+  tbody.innerHTML = "";
+
+  let totalCotizado = 0;
+  let goodCount = 0;
+  let blockedCount = 0;
+
+  rows.forEach(r => {
+    // KPIs
+    if ((r.EstadoGeneral || "").toLowerCase() === "good") goodCount++;
+    if (r.Bloqueador && r.Bloqueador.trim() && r.Bloqueador.trim() !== "—") blockedCount++;
+    const monto = parseFloat((r.Cotizado || "").replace(/[$.,]/g, "").replace(/\./g, "").replace(",", "."));
+    if (!isNaN(monto)) totalCotizado += monto;
+
+    const bloqHTML = r.Bloqueador && r.Bloqueador.trim() && r.Bloqueador !== "—"
+      ? `<span class="bloq">${r.Bloqueador}</span>` : "—";
+
+    const cotHTML = r.Cotizado && r.Cotizado.trim() && r.Cotizado !== "—"
+      ? `<span class="monto">${r.Cotizado}</span>`
+      : `<span class="monto-empty">—</span>`;
+
+    const pronostico = r.PronosticoEntrega && r.PronosticoEntrega.trim() ? r.PronosticoEntrega : "—";
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${r.Proyecto || ""}</td>
+        <td><span class="tipo-badge">${r.Tipo || "Amiba"}</span></td>
+        <td><span class="fecha">${r.Inicio || ""}</span></td>
+        <td>${pill(r.EstadoGeneral)}</td>
+        <td>${pill(r.Calendarizacion)}</td>
+        <td>${pill(r.Presupuesto)}</td>
+        <td>${cotHTML}</td>
+        <td style="font-size:12px;color:var(--text-secondary)">${pronostico}</td>
+        <td>${bloqHTML}</td>
+        <td><span class="comentario">${r.Comentarios || ""}</span></td>
+      </tr>`;
+  });
+
+  // Actualizar KPIs
+  document.getElementById("totalProjects").textContent = rows.length;
+  document.getElementById("goodCount").textContent = goodCount;
+  document.getElementById("blockedCount").textContent = blockedCount;
+
+  // Formatear total cotizado
+  const fmt = "$" + totalCotizado.toLocaleString("es-PY");
+  document.getElementById("totalCotizado").textContent = fmt;
+
+  // KPI sub textos
+  document.querySelectorAll(".kpi-sub")[1].textContent = `de ${rows.length} proyectos`;
+
+  // Footer
+  document.getElementById("footerReport").textContent = `Report #${REPORT_NUM} · Semana ${REPORT_SEMANA}`;
+}
+
+// ── FETCH ──
+async function loadData() {
+  try {
+    const res = await fetch(CSV_URL);
+    const text = await res.text();
+    const rows = parseCSV(text);
+    renderRows(rows);
+  } catch (e) {
+    document.querySelector("tbody").innerHTML =
+      `<tr><td colspan="10" style="text-align:center;padding:24px;color:var(--malo-text)">
+        ⚠️ No se pudo cargar el Google Sheets. Verificá la URL del CSV.
+      </td></tr>`;
+    console.error(e);
+  }
+}
+
+loadData();
+</script>
 </body>
 </html>
