@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amiba – Estados de Ejecución y Salud</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4f1;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: #e2e0d8;
+    --text-primary: #1a1916;
+    --text-secondary: #6b6860;
+    --text-muted: #a09e98;
+    --accent: #0f4c81;
+    --accent-light: #e8f0f8;
+
+    /* Semáforos */
+    --good-bg: #d4edda;
+    --good-text: #155724;
+    --good-dot: #28a745;
+    --medio-bg: #fff3cd;
+    --medio-text: #856404;
+    --medio-dot: #ffc107;
+    --malo-bg: #f8d7da;
+    --malo-text: #721c24;
+    --malo-dot: #dc3545;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 40px 24px;
+  }
+
+  /* ── WRAPPER ── */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 36px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-box {
+    background: var(--accent);
+    border-radius: 12px;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-box span {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    background: #5bc4f5;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 2px;
+  }
+
+  .report-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .report-name {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+  }
+
+  .header-right {
+    text-align: right;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-end;
+  }
+
+  .meta-item {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .meta-item strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .report-date-badge {
+    margin-top: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+
+  /* ── KPI CARDS ── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .kpi-value {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .kpi-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* ── TABLE ── */
+  .table-wrapper {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .table-header-bar {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .table-header-bar h2 {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .legend-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead th {
+    background: var(--surface2);
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: var(--text-muted);
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  thead th:first-child { padding-left: 24px; }
+  thead th:last-child { padding-right: 24px; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface2); }
+
+  tbody td {
+    padding: 14px 16px;
+    font-size: 13.5px;
+    vertical-align: top;
+  }
+
+  tbody td:first-child {
+    padding-left: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  tbody td:last-child { padding-right: 24px; }
+
+  .tipo-badge {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  .fecha {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  /* ── SEMÁFORO ── */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .pill-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .good  { background: var(--good-bg);  color: var(--good-text); }
+  .good  .pill-dot { background: var(--good-dot); }
+
+  .medio { background: var(--medio-bg); color: var(--medio-text); }
+  .medio .pill-dot { background: var(--medio-dot); }
+
+  .malo  { background: var(--malo-bg);  color: var(--malo-text); }
+  .malo  .pill-dot { background: var(--malo-dot); }
+
+  /* ── BLOQUEADOR ── */
+  .bloq {
+    font-size: 12px;
+    color: var(--malo-text);
+    background: var(--malo-bg);
+    border-radius: 8px;
+    padding: 4px 8px;
+    display: inline-block;
+  }
+
+  /* ── MONTO ── */
+  .monto {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .monto-empty {
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  /* ── COMENTARIO ── */
+  .comentario {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 340px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .footer-left {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .footer-right {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .header { flex-direction: column; }
+    .header-right { text-align: left; }
+    .meta-row { align-items: flex-start; }
+    .report-date-badge { align-self: flex-start; }
+    .comentario { max-width: 200px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ HEADER ══ -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-box">
+        <span><span class="logo-dot"></span>amiba</span>
+      </div>
+      <div>
+        <div class="report-title">Reporte ejecutivo</div>
+        <div class="report-name">Estados de Ejecución y Salud</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="meta-row">
+        <div class="meta-item"><strong>Encargado:</strong> Andrés Meza</div>
+        <div class="meta-item"><strong>Organización:</strong> RugerTek – Amiba</div>
+        <!-- ✏️ EDITAR: cambiar la fecha cada lunes -->
+        <div class="report-date-badge" id="reportDate">13 / 04 / 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ KPI CARDS ══ -->
+  <!--
+    ✏️ EDITAR: actualizar los números cada semana
+    total-projects   → cantidad de filas en la tabla
+    good-count       → cuántos tienen Estado General = Good
+    blocked-count    → cuántos tienen Bloqueador
+    total-cotizado   → suma de la columna Cotizado
+  -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Proyectos activos</div>
+      <div class="kpi-value" id="totalProjects">8</div>
+      <div class="kpi-sub">en ejecución</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Estado general OK</div>
+      <div class="kpi-value" id="goodCount" style="color: var(--good-dot)">7</div>
+      <div class="kpi-sub">de 8 proyectos</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Con bloqueador</div>
+      <div class="kpi-value" id="blockedCount" style="color: var(--malo-dot)">3</div>
+      <div class="kpi-sub">requieren acción</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Total cotizado</div>
+      <div class="kpi-value" style="font-size:22px" id="totalCotizado">$12.734</div>
+      <div class="kpi-sub">cartera activa</div>
+    </div>
+  </div>
+
+  <!-- ══ TABLE ══ -->
+  <div class="table-wrapper">
+    <div class="table-header-bar">
+      <h2>Detalle de proyectos</h2>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--good-dot)"></span>Good</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--medio-dot)"></span>Medio</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--malo-dot)"></span>Malo</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Proyecto</th>
+          <th>Tipo</th>
+          <th>Inicio</th>
+          <th>Estado General</th>
+          <th>Calendarización</th>
+          <th>Presupuesto</th>
+          <th>Cotizado</th>
+          <th>Pronóstico entrega</th>
+          <th>Bloqueador</th>
+          <th>Comentarios</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- ✏️ ════════════════════════════════════════════
+             ZONA DE EDICIÓN: agregar / modificar proyectos
+             Copiar un bloque <tr>...</tr> para nueva fila
+             Opciones de pill: class="pill good" | "pill medio" | "pill malo"
+             ════════════════════════════════════════════ -->
+
+        <tr>
+          <td>Basic</td>
+          <td><span class="tipo-badge">Amiba</span></td>
+          <td><span class="fecha">28/10/2025</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="pill medio"><span class="pill-dot"></span>Medio</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="monto">$990</span></td>
+          <td>En producción desde 19/3/2026</td>
+          <td>—</td>
+          <td><span class="comentario">Tool actualizada, se detectan errores sobre productos específicos. Se puede avanzar con pruebas.</span></td>
+        </tr>
+
+        <tr>
+          <td>El Lector</td>
+          <td><span class="tipo-badge">Amiba</span></td>
+          <td><span class="fecha">04/06/2025</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="pill medio"><span class="pill-dot"></span>Medio</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="monto">$3.926</span></td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="comentario">Cliente brindando feedbacks para mejoras y correcciones del chatbot.</span></td>
+        </tr>
+
+        <tr>
+          <td>Enex</td>
+          <td><span class="tipo-badge">Amiba</span></td>
+          <td><span class="fecha">09/12/2025</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="pill medio"><span class="pill-dot"></span>Medio</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="monto">$280</span></td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="comentario">WhatsApp de prueba conectado. Realizando pruebas iniciales. Continuar con parametrizaciones.</span></td>
+        </tr>
+
+        <tr>
+          <td>Go Media</td>
+          <td><span class="tipo-badge">Amiba</span></td>
+          <td><span class="fecha">26/01/2026</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="monto">$500</span></td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="comentario">Iniciando parametrizaciones. Solicitamos al cliente la hoja de relevamiento técnico inicial.</span></td>
+        </tr>
+
+        <tr>
+          <td>Iphone Boutique</td>
+          <td><span class="tipo-badge">Amiba</span></td>
+          <td><span class="fecha">19/11/2025</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="pill malo"><span class="pill-dot"></span>Malo</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="monto">$100</span></td>
+          <td>—</td>
+          <td><span class="bloq">Retorno del cliente</span></td>
+          <td><span class="comentario">Sin retorno del cliente. Pendiente de respuesta para continuar.</span></td>
+        </tr>
+
+        <tr>
+          <td>La Consolidada</td>
+          <td><span class="tipo-badge">Amiba</span></td>
+          <td><span class="fecha">08/04/2025</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="pill medio"><span class="pill-dot"></span>Medio</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="monto">$4.888</span></td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="comentario">Flujograma terminado. Trabajando en pruebas y mejoras del mismo.</span></td>
+        </tr>
+
+        <tr>
+          <td>Senatur</td>
+          <td><span class="tipo-badge">Amiba</span></td>
+          <td><span class="fecha">03/10/2025</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="pill medio"><span class="pill-dot"></span>Medio</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="monto-empty">—</span></td>
+          <td>—</td>
+          <td><span class="bloq">Confirmación del cliente</span></td>
+          <td><span class="comentario">Aguardando autorización para lanzamiento en WhatsApp.</span></td>
+        </tr>
+
+        <tr>
+          <td>TAXit</td>
+          <td><span class="tipo-badge">Amiba</span></td>
+          <td><span class="fecha">21/11/2025</span></td>
+          <td><span class="pill medio"><span class="pill-dot"></span>Medio</span></td>
+          <td><span class="pill malo"><span class="pill-dot"></span>Malo</span></td>
+          <td><span class="pill good"><span class="pill-dot"></span>Good</span></td>
+          <td><span class="monto">$2.050</span></td>
+          <td>—</td>
+          <td><span class="bloq">En Desarrollo</span></td>
+          <td><span class="comentario">Login con Facebook en desarrollo. Verificación por aplicación en curso. Pendiente APP REVIEW. Desarrollo en fase final.</span></td>
+        </tr>
+
+        <!-- ✏️ NUEVA FILA: copiar bloque de arriba y pegar acá -->
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <div class="footer">
+    <div class="footer-left">Amiba © 2026 · RugerTek – Reporte confidencial de uso interno</div>
+    <!-- ✏️ EDITAR: número de reporte semanal -->
+    <div class="footer-right">Report #014 · Semana 16</div>
+  </div>
+
+</div>
+</body>
+</html>
