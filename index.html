@@ -219,7 +219,7 @@
 
   table {
     width: 100%;
-    min-width: 900px;
+    min-width: 980px;
     border-collapse: collapse;
     table-layout: fixed;
   }
@@ -231,9 +231,10 @@
   thead th:nth-child(5)  { width: 8%; }
   thead th:nth-child(6)  { width: 7%; }
   thead th:nth-child(7)  { width: 6%; }
-  thead th:nth-child(8)  { width: 10%; }
+  thead th:nth-child(8)  { width: 8%; }
   thead th:nth-child(9)  { width: 9%; }
-  thead th:nth-child(10) { width: 31%; }
+  thead th:nth-child(10) { width: 9%; }
+  thead th:nth-child(11) { width: 24%; }
 
   thead th {
     background: var(--surface2);
@@ -459,6 +460,7 @@
           <th>Calendarización</th>
           <th>Presupuesto</th>
           <th>Cotizado</th>
+          <th>Ingreso Mensual</th>
           <th>Pronóstico entrega</th>
           <th>Bloqueador</th>
           <th>Comentarios</th>
@@ -515,6 +517,12 @@ function pill(val) {
   return `<span class="pill ${cls}"><span class="pill-dot"></span>${label}</span>`;
 }
 
+function montoHTML(val) {
+  return val && val.trim() && val.trim() !== "—"
+    ? `<span class="monto">${val}</span>`
+    : `<span class="monto-empty">—</span>`;
+}
+
 function renderRows(rows) {
   const tbody = document.querySelector("tbody");
   tbody.innerHTML = "";
@@ -533,10 +541,6 @@ function renderRows(rows) {
     const bloqHTML = r.Bloqueador && r.Bloqueador.trim() && r.Bloqueador !== "—"
       ? `<span class="bloq">${r.Bloqueador}</span>` : "—";
 
-    const cotHTML = r.Cotizado && r.Cotizado.trim() && r.Cotizado !== "—"
-      ? `<span class="monto">${r.Cotizado}</span>`
-      : `<span class="monto-empty">—</span>`;
-
     const pronostico = r.PronosticoEntrega && r.PronosticoEntrega.trim() ? r.PronosticoEntrega : "—";
 
     tbody.innerHTML += `
@@ -547,7 +551,8 @@ function renderRows(rows) {
         <td>${pill(r.EstadoGeneral)}</td>
         <td>${pill(r.Calendarizacion)}</td>
         <td>${pill(r.Presupuesto)}</td>
-        <td>${cotHTML}</td>
+        <td>${montoHTML(r.Cotizado)}</td>
+        <td>${montoHTML(r["Ingreso Mensual"])}</td>
         <td style="font-size:12px;color:var(--text-secondary)">${pronostico}</td>
         <td>${bloqHTML}</td>
         <td><span class="comentario">${r.Comentarios || ""}</span></td>
@@ -579,7 +584,7 @@ async function loadData() {
     renderRows(rows);
   } catch (e) {
     document.querySelector("tbody").innerHTML =
-      `<tr><td colspan="10" style="text-align:center;padding:24px;color:var(--malo-text)">
+      `<tr><td colspan="11" style="text-align:center;padding:24px;color:var(--malo-text)">
         ⚠️ No se pudo cargar el Google Sheets. Verificá la URL del CSV.
       </td></tr>`;
     console.error(e);
