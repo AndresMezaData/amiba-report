@@ -535,7 +535,7 @@ function renderRows(rows) {
     // KPIs
     if ((r.EstadoGeneral || "").toLowerCase() === "good") goodCount++;
     if (r.Bloqueador && r.Bloqueador.trim() && r.Bloqueador.trim() !== "—") blockedCount++;
-    const monto = parseFloat((r.Cotizado || "").replace(/[$.,]/g, "").replace(/\./g, "").replace(",", "."));
+    const monto = parseFloat((r.Cotizado || "").replace(/\$/g, "").replace(/\./g, "").replace(",", "."));
     if (!isNaN(monto)) totalCotizado += monto;
 
     const bloqHTML = r.Bloqueador && r.Bloqueador.trim() && r.Bloqueador !== "—"
